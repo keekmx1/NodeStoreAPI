@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import connection from "./utils/db";
 import bodyParser from "body-parser";
+import authRoutes from "./routes/authRoutes";
 
 
 // Initailize dotenv
@@ -15,6 +16,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Create URl Rounting
+app.use("/api/auth", authRoutes);
+
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello, this is TypeScript nodejs project");
 });
