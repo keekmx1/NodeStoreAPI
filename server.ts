@@ -1,4 +1,8 @@
 import express, { Express, Request, Response } from "express";
+import dotenv from "dotenv";
+
+// Initailize dotenv
+dotenv.config();
 
 // Craete Exprees Instant
 const app: Express = express();
@@ -9,7 +13,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Start Server on port 3000
-const port: number = 3000;
+const port: string | number = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log("Server running on http://localhost:3000");
+  console.log(`Server running on http://localhost:${port}`);
 });
