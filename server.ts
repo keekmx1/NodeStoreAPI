@@ -1,5 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
+import connection from "./utils/db";
+
 
 // Initailize dotenv
 dotenv.config();
@@ -13,9 +15,15 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Test Connection Database MySQL
-app.get("/testdb", (req: Request, res: Response) => {
-  res.send("");
-});
+app.get('/testdb', (req:Request, res:Response) => {
+  connection.connect((error: Error | unknown) => {
+      if(error){
+          res.send(`Error connecting to database: ${error}`)
+      } else {
+          res.send('Database is connected successfully')
+      }
+  })
+})
 
 // Start Server on port 3000
 const port: string | number = process.env.PORT || 3000;
