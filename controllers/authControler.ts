@@ -2,6 +2,10 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import connection from "../utils/db";
+import dotenv from "dotenv";
+
+// Initialize dotenv
+dotenv.config();
 
 // define interface for User
 interface User {
@@ -53,7 +57,7 @@ async function register(req: Request, res: Response): Promise<void> {
               connection.execute(
                 sql,
                 values,
-                function (error: any, results: any, fields: any) {
+                function (error: any, results: any) {
                   if (error) {
                     res.json({
                       status: "error",

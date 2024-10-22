@@ -1,6 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import connection from "./utils/db";
+import bodyParser from "body-parser";
 
 
 // Initailize dotenv
@@ -8,6 +9,10 @@ dotenv.config();
 
 // Craete Exprees Instant
 const app: Express = express();
+
+// parse incoming json request
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Create URl Rounting
 app.get("/", (req: Request, res: Response) => {
