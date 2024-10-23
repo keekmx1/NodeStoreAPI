@@ -2,6 +2,7 @@ import e, { Request, Response } from "express";
 import connection from "../utils/db";
 import multer from "multer";
 import multerConfig from "../utils/multer_config";
+import { fs } from "fs";
 
 const upload = multer(multerConfig.config).single(multerConfig.keyUpload);
 
@@ -205,6 +206,15 @@ function deleteProduct(req: Request, res: Response) {
         }
       }
     );
+    // Delete image from storage
+    const fs = require("fs");
+    const path = require("path");
+    const filePath = path.join(
+      __dirname,
+      "../public/uploads/",
+      req.params.productId
+    );
+    fs.unlinkSync(filePath);
   } catch (error) {
     res.json({
       status: "error",
