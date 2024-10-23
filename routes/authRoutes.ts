@@ -6,6 +6,7 @@ const router: Router = express.Router();
 
 // Define Router
 router.post("/register", authControler.register);
+router.get("/login", authControler.login);
 
 // Export Router
 export default router;

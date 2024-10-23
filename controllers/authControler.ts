@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { Request, Response } from "express";
+import e, { Request, Response } from "express";
 import connection from "../utils/db";
 import dotenv from "dotenv";
 
@@ -112,8 +112,52 @@ async function login(req: Request, res: Response): Promise<void> {
             message: error,
           });
           return;
-        }else{
-          
+        } else {
+          if (results.length > 0) {
+            //ມີ Email ນີ້
+            // compare password with hashed password
+            bcrypt.compare(
+              password,
+              results[0].password,
+              function (err, result) {
+                if (err) {
+                  res.json({
+                    status: "error",
+                    message: err,
+                  });
+                  return;
+                } else if (result) {
+                  // Generate JWT token
+                  const token = jwt.sign(
+                    { email },
+                    process.env.JWT_SECRET || ""
+                  );
+                  res.json({
+                    status: "ok",
+                    message: "User logged in successfully",
+                    token,
+                    user: {
+                      id: results[0].id,
+                      firstname: results[0].firstname,
+                      lastname: results[0].lastname,
+                      email: results[0].email,
+                    },
+                  });
+                } else {
+                  res.json({
+                    status: "error",
+                    message: "Invalid password",
+                  });
+                  return;
+                }
+              }
+            );
+          } else {
+            res.json({
+              status: "error",
+              message: "Email not found",
+            });
+          }
         }
       }
     );
@@ -123,4 +167,4 @@ async function login(req: Request, res: Response): Promise<void> {
   }
 }
 
-export { register };
+export { register, login };
