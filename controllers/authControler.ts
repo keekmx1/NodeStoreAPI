@@ -96,4 +96,31 @@ async function register(req: Request, res: Response): Promise<void> {
   }
 }
 
-export  { register };
+// login function
+async function login(req: Request, res: Response): Promise<void> {
+  const { email, password }: User = req.body;
+
+  // check if user already exists
+  try {
+    connection.execute(
+      "Select * from users where email = ?",
+      [email],
+      function (error: any, results: any) {
+        if (error) {
+          res.json({
+            status: "error",
+            message: error,
+          });
+          return;
+        }else{
+          
+        }
+      }
+    );
+  } catch (error) {
+    console.log("Error login user: ", error);
+    res.sendStatus(500);
+  }
+}
+
+export { register };
