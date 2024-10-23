@@ -2,7 +2,7 @@ import e, { Request, Response } from "express";
 import connection from "../utils/db";
 import multer from "multer";
 import multerConfig from "../utils/multer_config";
-import { fs } from "fs";
+
 
 const upload = multer(multerConfig.config).single(multerConfig.keyUpload);
 
