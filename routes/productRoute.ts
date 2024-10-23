@@ -8,6 +8,8 @@ const router: Router = express.Router();
 router.get("/", productController.getAllProducts);
 router.get("/:id", productController.getAllProducts);
 router.post("/create", productController.createProduct);
+router.put("/update/:id", productController.updateProduct);
+router.delete("/delete/:id", productController.deleteProduct);
 
 // Export Router
 export default router;

@@ -89,7 +89,7 @@ function createProduct(req: Request, res: Response) {
           res.json({
             status: "ok",
             message: "Product created successfully",
-            product:{
+            product: {
               id: results.insertId,
               name: req.body.name,
               description: req.body.description,
@@ -99,8 +99,8 @@ function createProduct(req: Request, res: Response) {
               price: req.body.price,
               category_id: req.body.category_id,
               user_id: req.body.user_id,
-              status_id: req.body.status_id
-            }
+              status_id: req.body.status_id,
+            },
           });
         }
       }
@@ -114,4 +114,79 @@ function createProduct(req: Request, res: Response) {
   }
 }
 
-export { getAllProducts, getProductById, createProduct };
+// ----------------------------
+// Update Products
+// ----------------------------
+
+function updateProduct(req: Request, res: Response) {
+  try {
+    connection.execute(
+      "UPDATE products SET name = ?, description = ?, barcode = ?, image = ?, stock = ?, price = ?, category_id = ?, user_id = ?, status_id = ? WHERE id = ?",
+      [
+        req.body.name,
+        req.body.description,
+        req.body.barcode,
+        req.body.image,
+        req.body.stock,
+        req.body.price,
+        req.body.category_id,
+        req.body.user_id,
+        req.body.status_id,
+        req.params.id,
+      ],
+      function (error: any, results: any) {
+        if (error) {
+          res.json({
+            status: "error",
+            message: error,
+          });
+          return;
+        } else {
+          res.json({ status: "ok", message: "Product updated successfully" });
+        }
+      }
+    );
+  } catch (error) {
+    res.json({
+      status: "error",
+      message: error,
+    });
+  }
+}
+
+// ----------------------------
+// Delete Products
+// ----------------------------
+
+function deleteProduct(req: Request, res: Response) {
+  try {
+    connection.execute(
+      "DELETE FROM products WHERE id = ?",
+      [req.params.id],
+      function (error: any, results: any) {
+        if (error) {
+          res.json({
+            status: "error",
+            message: error,
+          });
+          return;
+        } else {
+          res.json({ status: "ok", message: "Product deleted successfully" });
+        }
+      }
+    );
+  } catch (error) {
+    res.json({
+      status: "error",
+      message: error,
+    });
+  }
+}
+
+export {
+  getAllProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+};
