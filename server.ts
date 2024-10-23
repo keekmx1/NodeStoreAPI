@@ -4,13 +4,22 @@ import connection from "./utils/db";
 import bodyParser from "body-parser";
 import authRoutes from "./routes/authRoutes";
 import productRoute from "./routes/productRoute";
-
+import cors from "cors";
 
 // Initailize dotenv
 dotenv.config();
 
 // Craete Exprees Instant
 const app: Express = express();
+
+// Use cors
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "DELETE", "UPDATE", "PUT"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 // parse incoming json request
 app.use(bodyParser.json());
@@ -25,15 +34,15 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Test Connection Database MySQL
-app.get('/testdb', (req:Request, res:Response) => {
+app.get("/testdb", (req: Request, res: Response) => {
   connection.connect((error: Error | unknown) => {
-      if(error){
-          res.send(`Error connecting to database: ${error}`)
-      } else {
-          res.send('Database is connected successfully')
-      }
-  })
-})
+    if (error) {
+      res.send(`Error connecting to database: ${error}`);
+    } else {
+      res.send("Database is connected successfully");
+    }
+  });
+});
 
 // Start Server on port 3000
 const port: string | number = process.env.PORT || 3000;
